@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, session, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from models import connect_db, db, User 
+from models import connect_db, db, User
+from flask_wtf import RegisterForm
 
 
 app = Flask(__name__)
@@ -14,3 +15,14 @@ connect_db(app)
 db.create_all()
 
 toolbar = DebugToolbarExtension(app)
+
+
+@app.route('/')
+def home_page():
+    """ Home redirects to /register """
+    return redirect('/register')
+
+
+@app.route('/register')
+def register():
+    """ Register a user """
