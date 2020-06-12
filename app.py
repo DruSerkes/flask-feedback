@@ -65,10 +65,12 @@ def login_user():
     return render_template('login.html', form=form)
         
 @app.route('/users/<username>')
-def show_secret_page():
+def show_secret_page(username):
     """ Display secret page """
     if 'username' in session:
-        return "You made it!"
+        user = User.query.filter_by(username=username).first()
+        return render_template('secret.html', user=user)
+
     else: 
         return redirect('/login')
 
