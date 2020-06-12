@@ -35,12 +35,14 @@ def register():
         # first_name = form.first_name.data
         # last_name = form.last_name.data
         user_data = generate_user_data(form)
+        # import pdb 
+        # pdb.set_trace()
         new_user = User.register(user_data)
 
         db.session.add(new_user)
         db.session.commit()
         session['username'] = new_user.username
-        
+
         return redirect('/secret')
 
     return render_template('register.html', form=form)
@@ -65,4 +67,13 @@ def login_user():
 @app.route('/secret')
 def show_secret_page():
     """ Display secret page """
-    return "You made it!"
+    if 'username' in session:
+        return "You made it!"
+    else: 
+        return redirect('/login')
+
+@app.route('/logout')
+def logout_user():
+    """ Removes user from session and redirect home """
+    session.pop('username')
+    return redirect('/')
