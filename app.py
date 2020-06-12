@@ -58,5 +58,5 @@ def login_user():
             return redirect('/secret')
         else: 
             form.username.errors('Invalid login')
-    return render_template('/login', form=form)
+    return render_template('login.html', form=form)
         
