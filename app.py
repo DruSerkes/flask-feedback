@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, session, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, User
 from forms import RegisterForm, LoginForm
-from helpers import generate_user_data
+from helpers import generate_user_data, generate_login_data
 
 
 app = Flask(__name__)
@@ -50,4 +50,13 @@ def login_user():
     """
     form = LoginForm()
     if form.validate_on_submit():
+        login_data = generate_login_data(form)
+        user = User.authenticate(login_data)
+        if user: 
+            flash(f'Welcome back {user.username}')
+            session['username'] = user.username
+            return redirect('/secret')
+        else: 
+            form.username.errors('Invalid login')
+    return render_template('/login', form=form)
         
