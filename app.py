@@ -39,6 +39,8 @@ def register():
 
         db.session.add(new_user)
         db.session.commit()
+        session['username'] = new_user.username
+        
         return redirect('/secret')
 
     return render_template('register.html', form=form)
@@ -60,3 +62,7 @@ def login_user():
             form.username.errors('Invalid login')
     return render_template('login.html', form=form)
         
+@app.route('/secret')
+def show_secret_page():
+    """ Display secret page """
+    return "You made it!"
