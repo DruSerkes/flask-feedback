@@ -137,8 +137,8 @@ def delete_feedback(feedback_id):
         # Remove feedback 
         Feedback.query.filter_by(id=feedback_id).delete()
         db.session.commit()
-        flash('Feedback Deleted!')
+        flash('Feedback Deleted!', 'success')
         return redirect(f'/users/{username}')
     else:
-        flash("You must be logged in to do that!")
+        flash("You must be logged in to do that!", 'danger')
         return redirect('/login')
