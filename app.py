@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, session, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from models import connect_db, db, User
+from models import connect_db, db, User, Feedback
 from forms import RegisterForm, LoginForm
 from helpers import generate_user_data, generate_login_data
 
@@ -35,7 +35,7 @@ def register():
         # first_name = form.first_name.data
         # last_name = form.last_name.data
         user_data = generate_user_data(form)
-        # import pdb 
+        # import pdb
         # pdb.set_trace()
         new_user = User.register(user_data)
 
@@ -47,6 +47,7 @@ def register():
 
     return render_template('register.html', form=form)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login_user():
     """ 
@@ -56,14 +57,22 @@ def login_user():
     if form.validate_on_submit():
         login_data = generate_login_data(form)
         user = User.authenticate(login_data)
-        if user: 
+        if user:
             flash(f'Welcome back {user.username}')
             session['username'] = user.username
             return redirect(f'/users/{user.username}')
-        else: 
+        else:
             form.username.errors('Invalid login')
     return render_template('login.html', form=form)
-        
+
+
+"""
+
+
+Have a link that sends you to a form to add more feedback and a button to delete the user Make sure that only the user who is logged in can successfully view this page.
+"""
+
+
 @app.route('/users/<username>')
 def show_secret_page(username):
     """ Display secret page """
@@ -71,8 +80,9 @@ def show_secret_page(username):
         user = User.query.filter_by(username=username).first()
         return render_template('secret.html', user=user)
 
-    else: 
+    else:
         return redirect('/login')
+
 
 @app.route('/logout')
 def logout_user():
