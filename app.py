@@ -128,7 +128,7 @@ def edit_feedback(feedback_id):
             feedback.content = form.content.data 
             db.session.commit()
             flash('Feedback edited', 'success')
-            return redirect(f'/users/{username}')
+            return redirect(f'/users/{feedback.username}')
         return render_template('edit_feedback.html', form=form)
     flash("You must be logged in to do that!")
     return redirect('/login')
