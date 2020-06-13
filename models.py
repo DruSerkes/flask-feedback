@@ -59,3 +59,11 @@ class Feedback(db.Model):
     content = db.Column(db.Text, nullable=False)
     username = db.Column(db.Text, db.ForeignKey(
         'users.username', ondelete='cascade'))
+
+    @classmethod
+    def make_feedback(cls, data):
+        """ Class method 
+        Input: feedback data object 
+        Returns: Feedback instance
+        """
+        return cls(title=data['title'], content=data['content'], username=data['username']) 

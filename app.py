@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, session, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, User, Feedback
 from forms import RegisterForm, LoginForm, FeedbackForm
-from helpers import generate_user_data, generate_login_data
+from helpers import generate_user_data, generate_login_data, generate_feedback_data
 
 
 app = Flask(__name__)
@@ -97,6 +97,7 @@ def delete_user(username):
 @app.route('/users/<username>/feedback/add', methods=['GET', 'POST'])
 def add_feedback(username):
     """ Add feedback for a user """
-    user = User.query.filter_by(username=username).first()
+    form = FeedbackForm()
     if form.validate_on_submit():
-        title = form.
+        generate_feedback_data(form, username)
+        
