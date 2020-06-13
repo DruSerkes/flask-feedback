@@ -97,7 +97,15 @@ def delete_user(username):
 @app.route('/users/<username>/feedback/add', methods=['GET', 'POST'])
 def add_feedback(username):
     """ Add feedback for a user """
-    form = FeedbackForm()
-    if form.validate_on_submit():
-        generate_feedback_data(form, username)
-        
+    if 'username' in session:
+        form = FeedbackForm()
+        if form.validate_on_submit():
+            feedback_data = generate_feedback_data(form, username)
+            new_feedback = Feedback.make_feedback(feedback_data)
+            db.session.add(new_feedback)
+            db.session.commit()
+            flash('Feedback added', 'success')
+            return redirect(f'/users/{username}')
+        return render_template('add_feedback.html', form=form)
+    flash("You must be logged in to do that!")
+    return redirect('/login')
