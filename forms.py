@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField
-from wtforms.validators import InputRequired, Email
+from wtforms.validators import InputRequired, Email, Length
 
 
 class RegisterForm(FlaskForm):
@@ -33,5 +33,5 @@ class LoginForm(FlaskForm):
 class FeedbackForm(FlaskForm):
     """ Feedback Form """
     title = StringField("Title", validators=[
-                        InputRequired(message="Feedback Title Required"), length(max=100, message="Max Length 100 characters")])
+                        InputRequired(message="Feedback Title Required"), Length(max=100, message="Max Length 100 characters")])
     content = TextAreaField("Content", validators=[InputRequired()])
