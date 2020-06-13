@@ -55,7 +55,7 @@ def login_user():
     if 'username' in session:
         username = session['username']
         return redirect(f'/users/{username}')
-        
+
     form = LoginForm()
     if form.validate_on_submit():
         login_data = generate_login_data(form)
@@ -145,3 +145,9 @@ def delete_feedback(feedback_id):
     else:
         flash("You must be logged in to do that!", 'danger')
         return redirect('/login')
+
+# CUSTOM 404 PAGE 
+@app.errorhandler(404)
+def display_404(error):
+    """ Displays a custom error page when returning a 404 error """
+    return render_template('/error.html'), 404
