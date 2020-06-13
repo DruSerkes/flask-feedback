@@ -62,7 +62,7 @@ def login_user():
             session['username'] = user.username
             return redirect(f'/users/{user.username}')
         else:
-            form.username.errors('Invalid login')
+            form.username.errors.append('Invalid login')
     return render_template('login.html', form=form)
 
 
@@ -81,7 +81,7 @@ def show_secret_page(username):
 def logout_user():
     """ Removes user from session and redirect home """
     session.pop('username')
-    return redirect('/')
+    return redirect('/login')
 
 
 @app.route('/users/<username>/delete', methods=['POST'])
