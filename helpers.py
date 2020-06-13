@@ -32,3 +32,16 @@ def generate_login_data(form):
         "username": username,
         "password": password
     }
+
+def generate_feedback_data(form, username):
+    """ 
+    Access form for feedback data 
+    Returns a feedback_data object 
+    """
+    title = form.title.data
+    content = form.content.data    
+    return {
+        'title':title,
+        'content':content,
+        'username':username
+    }
