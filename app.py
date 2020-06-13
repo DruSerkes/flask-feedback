@@ -110,12 +110,6 @@ def add_feedback(username):
     flash("You must be logged in to do that!")
     return redirect('/login')
 
-'''
-GET /feedback/<feedback-id>/update
-Display a form to edit feedback — **Make sure that only the user who has written that feedback can see this form **
-POST /feedback/<feedback-id>/update
-Update a specific piece of feedback and redirect to /users/<username> — Make sure that only the user who has written that feedback can update it
-'''
 
 @app.route('/feedback/<int:feedback_id>/update', methods=['GET', 'POST'])
 def edit_feedback(feedback_id):
@@ -132,3 +126,19 @@ def edit_feedback(feedback_id):
         return render_template('edit_feedback.html', form=form)
     flash("You must be logged in to do that!")
     return redirect('/login')
+
+@app.route('/feedback/<int:feedback_id>/delete', methods=['POST'])
+def delete_feedback(feedback_id):
+    """ Delete feedback and return to user page """ 
+    if 'username' in session:
+        # Get username 
+        username = session['username']
+
+        # Remove feedback 
+        Feedback.query.filter_by(id=feedback_id).delete()
+        db.session.commit()
+        flash('Feedback Deleted!')
+        return redirect(f'/users/{username}')
+    else:
+        flash("You must be logged in to do that!")
+        return redirect('/login')
