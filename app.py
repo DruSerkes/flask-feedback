@@ -87,7 +87,8 @@ def logout_user():
 @app.route('/users/<username>/delete', methods=['POST'])
 def delete_user(username):
     """ Delete a user and remove all feedback """
-    User.query.filter_by(username=username).delete()
-    db.session.commit()
-    session.pop('username')
-    return redirect('/')
+    if 'username' in session and session['username'] == username:
+        User.query.filter_by(username=username).delete()
+        db.session.commit()
+        session.pop('username')
+        return redirect('/')
