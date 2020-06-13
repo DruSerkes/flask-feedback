@@ -66,13 +66,6 @@ def login_user():
     return render_template('login.html', form=form)
 
 
-"""
-
-
-Have a link that sends you to a form to add more feedback and a button to delete the user Make sure that only the user who is logged in can successfully view this page.
-"""
-
-
 @app.route('/users/<username>')
 def show_secret_page(username):
     """ Display secret page """
@@ -87,5 +80,14 @@ def show_secret_page(username):
 @app.route('/logout')
 def logout_user():
     """ Removes user from session and redirect home """
+    session.pop('username')
+    return redirect('/')
+
+
+@app.route('/users/<username>/delete', methonds=['POST'])
+def delete_user(username):
+    """ Delete a user and remove all feedback """
+    User.query.filter_by(username=username).delete()
+    db.session.commit()
     session.pop('username')
     return redirect('/')
