@@ -27,16 +27,14 @@ def home_page():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """ Register a user """
+    # Check if user logged in first
+    if 'username' in session:
+        username = session['username']
+        return redirect(f'/users/{username}')
+    
     form = RegisterForm()
     if form.validate_on_submit():
-        # username = form.username.data
-        # password = form.password.data
-        # email = form.email.data
-        # first_name = form.first_name.data
-        # last_name = form.last_name.data
         user_data = generate_user_data(form)
-        # import pdb
-        # pdb.set_trace()
         new_user = User.register(user_data)
 
         db.session.add(new_user)
@@ -53,6 +51,11 @@ def login_user():
     """ 
     User Login  
     """
+    # Check if user logged in first
+    if 'username' in session:
+        username = session['username']
+        return redirect(f'/users/{username}')
+        
     form = LoginForm()
     if form.validate_on_submit():
         login_data = generate_login_data(form)
