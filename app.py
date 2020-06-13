@@ -72,7 +72,7 @@ def login_user():
 @app.route('/users/<username>')
 def show_secret_page(username):
     """ Display secret page """
-    if 'username' in session:
+    if 'username' in session and session['username'] == username:
         user = User.query.filter_by(username=username).first()
         return render_template('secret.html', user=user)
 
@@ -151,3 +151,9 @@ def delete_feedback(feedback_id):
 def display_404(error):
     """ Displays a custom error page when returning a 404 error """
     return render_template('/error.html'), 404
+
+# CUSTOM 401 PAGE 
+@app.errorhandler(401)
+def display_401(error):
+    """ Displays a custom error page when returning a 404 error """
+    return render_template('/error401.html'), 401
