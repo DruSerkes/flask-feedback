@@ -20,6 +20,7 @@ class User(db.Model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
+    feedbacks = db.relationship('Feedback', backref='user')
 
     @classmethod
     def register(cls, data):
@@ -47,3 +48,14 @@ class User(db.Model):
     def get_full_name(self):
         """ returns first and last name together """
         return f'{self.first_name} {self.last_name}'
+
+
+class Feedback(db.Model):
+    """ Feedback Model """
+    __tablename__ = 'feedbacks'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    username = db.Column(db.Text, db.ForeignKey(
+        'users.username', ondelete='cascade'))
