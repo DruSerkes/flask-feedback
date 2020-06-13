@@ -22,9 +22,16 @@ class RegisterForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    """ User login form """ 
+    """ User login form """
     username = StringField("Username", validators=[
         InputRequired(message="Username required")])
 
     password = PasswordField("Password", validators=[
         InputRequired(message="Password required")])
+
+
+class FeedbackForm(FlaskForm):
+    """ Feedback Form """
+    title = StringField("Title", validators=[
+                        InputRequired(message="Feedback Title Required"), length(max=100, message="Max Length 100 characters")])
+    content = TextAreaField("Content", validators=[InputRequired()])
